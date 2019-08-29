@@ -126,9 +126,17 @@ Y.namespace('M.atto_accordion').Button = Y.Base.create('button', Y.M.editor_atto
 
         //Set title from selection
         if (this._currentSelection !== false || !this._currentSelection.collapsed) {
-            var title = this._currentSelection[0].commonAncestorContainer.data.toString();
+            if (typeof this._currentSelection[0].commonAncestorContainer.length === 'undefined') {
+                var title = this._currentSelection[0].commonAncestorContainer.textContent;
+                var content = this._currentSelection[0].commonAncestorContainer.innerHTML;
+            } else {
+                var title = this._currentSelection[0].commonAncestorContainer.data.toString();
+                var content = title;
+            }
             title = title.substring(this._currentSelection[0].startOffset, this._currentSelection[0].endOffset);
+            content = content.trim();
             this._content.one(SELECTORS.TITLEINPUT).set('value', title);
+            this._content.one(SELECTORS.CONTENTINPUT).set('value', content);
         }
         
         this._content.one('.submit').on('click', this._createaccordion, this);
